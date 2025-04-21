@@ -60,7 +60,7 @@ const Sidebar = ({ open, setOpen }: SidebarProps) => {
   return (
     <div
       className={cn(
-        "fixed inset-y-0 left-0 z-50 flex flex-col bg-clinic-primary text-white transition-all duration-300 ease-in-out",
+        "fixed inset-y-0 left-0 z-30 flex flex-col bg-clinic-primary text-white transition-all duration-300 ease-in-out", // Mudei z-50 para z-30
         open ? "w-64" : "w-20"
       )}
     >
