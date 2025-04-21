@@ -1,27 +1,30 @@
 
-import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { 
   Calendar, 
   Users, 
   FileText, 
-  Settings, 
-  ChevronLeft, 
-  ChevronRight,
+  Settings,
   User,
-  Lock,
   LogOut
 } from "lucide-react";
+import {
+  Sidebar as ShadcnSidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarTrigger,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  useSidebar
+} from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-interface SidebarProps {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-}
-
-const Sidebar = ({ open, setOpen }: SidebarProps) => {
+const Sidebar = () => {
   const location = useLocation();
+  const { state } = useSidebar();
   const user = JSON.parse(localStorage.getItem("clinicCRM_user") || '{"role": "admin"}');
   
   const navigation = [
@@ -58,85 +61,72 @@ const Sidebar = ({ open, setOpen }: SidebarProps) => {
   };
 
   return (
-    <div
-      className={cn(
-        "fixed inset-y-0 left-0 z-30 flex flex-col bg-clinic-primary text-white transition-all duration-300 ease-in-out", // Mudei z-50 para z-30
-        open ? "w-64" : "w-20"
-      )}
-    >
-      <div className="flex items-center justify-between h-16 px-4">
-        {open ? (
-          <h1 className="text-xl font-bold">ClinicCRM</h1>
-        ) : (
-          <h1 className="text-xl font-bold">CRM</h1>
-        )}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setOpen(!open)}
-          className="text-white hover:bg-clinic-accent/20"
-        >
-          {open ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
-        </Button>
-      </div>
-      
-      <div className="flex-1 py-4 overflow-auto">
-        <nav className="px-2 space-y-1">
-          {navigation
-            .filter((item) => item.allowed.includes(user.role))
-            .map((item) => {
-              const isActive = location.pathname.startsWith(item.href);
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={cn(
-                    "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all",
-                    isActive
-                      ? "bg-white/20 text-white"
-                      : "text-white/80 hover:bg-white/10 hover:text-white"
-                  )}
-                >
-                  <item.icon
-                    className={cn("flex-shrink-0 w-6 h-6", open ? "mr-3" : "")}
-                  />
-                  {open && <span>{item.name}</span>}
-                </Link>
-              );
-            })}
-        </nav>
-      </div>
-      
-      <div className="p-4 border-t border-white/10">
-        <div className={cn(
-          "flex items-center",
-          open ? "justify-between" : "justify-center"
-        )}>
-          <div className="flex items-center">
-            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-              <User size={18} />
-            </div>
-            {open && (
-              <div className="ml-3">
-                <p className="text-sm font-medium">Dr. João Silva</p>
-                <p className="text-xs text-white/70">Médico</p>
-              </div>
-            )}
+    <>
+      <ShadcnSidebar className="bg-clinic-primary text-white">
+        <SidebarHeader className="flex items-center justify-between px-4 py-3 h-16">
+          <div className="flex items-center gap-2 text-xl font-bold">
+            {state === "expanded" ? "ClinicCRM" : "CRM"}
           </div>
-          
-          {open && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleLogout}
-              className="text-white hover:bg-white/10"
-            >
-              <LogOut size={18} />
-            </Button>
-          )}
-        </div>
-      </div>
-    </div>
+          <SidebarTrigger className="text-white hover:bg-clinic-accent/20" />
+        </SidebarHeader>
+        
+        <SidebarContent>
+          <SidebarMenu>
+            {navigation
+              .filter((item) => item.allowed.includes(user.role))
+              .map((item) => {
+                const isActive = location.pathname.startsWith(item.href);
+                return (
+                  <SidebarMenuItem key={item.name}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      tooltip={state === "collapsed" ? item.name : undefined}
+                      className={cn(
+                        "w-full",
+                        isActive
+                          ? "bg-white/20 text-white hover:bg-white/20"
+                          : "text-white/80 hover:bg-white/10 hover:text-white"
+                      )}
+                    >
+                      <Link to={item.href} className="flex items-center gap-2">
+                        <item.icon className="h-5 w-5" />
+                        <span>{item.name}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+          </SidebarMenu>
+        </SidebarContent>
+        
+        <SidebarFooter className="border-t border-white/10">
+          <div className="px-4 py-3">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                <User size={18} />
+              </div>
+              {state === "expanded" && (
+                <div>
+                  <p className="text-sm font-medium">Dr. João Silva</p>
+                  <p className="text-xs text-white/70">Médico</p>
+                </div>
+              )}
+              {state === "expanded" && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleLogout}
+                  className="ml-auto text-white hover:bg-white/10"
+                >
+                  <LogOut size={18} />
+                </Button>
+              )}
+            </div>
+          </div>
+        </SidebarFooter>
+      </ShadcnSidebar>
+    </>
   );
 };
 

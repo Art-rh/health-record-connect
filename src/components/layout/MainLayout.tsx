@@ -1,15 +1,15 @@
 
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
-import { useNavigate } from "react-router-dom";
 
 interface MainLayoutProps {
   children: ReactNode;
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const navigate = useNavigate();
   
   // Check if user is logged in (mock)
@@ -21,19 +21,21 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   }
 
   return (
-    <div className="min-h-screen flex bg-gray-50">
-      <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
-      
-      <div className="flex flex-col flex-1">
-        <TopBar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+    <SidebarProvider defaultOpen={true}>
+      <div className="min-h-screen flex w-full bg-gray-50">
+        <Sidebar />
         
-        <main className="flex-1 p-4 md:p-6 overflow-x-hidden">
-          <div className="max-w-full mx-auto">
-            {children}
-          </div>
-        </main>
+        <div className="flex-1 flex flex-col">
+          <TopBar />
+          
+          <main className="flex-1 p-4 md:p-6 overflow-x-hidden">
+            <div className="max-w-full mx-auto">
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 };
 
