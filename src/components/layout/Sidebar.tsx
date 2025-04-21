@@ -16,7 +16,7 @@ const Sidebar = () => {
   
   return (
     <TooltipProvider delayDuration={0}>
-      <ShadcnSidebar className="bg-clinic-primary text-white border-r border-white/10">
+      <ShadcnSidebar className="border-r border-white/10 bg-clinic-primary text-white">
         <SidebarHeader className="flex items-center justify-between px-4 py-3 h-16">
           <div className="flex items-center gap-2 text-xl font-bold">
             {state === "expanded" ? "ClinicCRM" : "CRM"}

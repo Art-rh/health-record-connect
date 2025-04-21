@@ -12,7 +12,6 @@ interface MainLayoutProps {
 const MainLayout = ({ children }: MainLayoutProps) => {
   const navigate = useNavigate();
   
-  // Check if user is logged in (mock)
   const isLoggedIn = localStorage.getItem("clinicCRM_token");
   
   if (!isLoggedIn) {
@@ -21,7 +20,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   }
 
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider defaultOpen>
       <div className="min-h-screen flex w-full bg-gray-50">
         <Sidebar />
         
