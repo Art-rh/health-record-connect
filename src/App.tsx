@@ -11,6 +11,7 @@ import Agenda from "./pages/Agenda";
 import Pacientes from "./pages/Pacientes";
 import Prontuario from "./pages/Prontuario";
 import NotFound from "./pages/NotFound";
+import MainLayout from "./components/layout/MainLayout";
 
 const queryClient = new QueryClient();
 
@@ -29,19 +30,51 @@ const App = () => {
             
             <Route 
               path="/" 
-              element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" replace />} 
+              element={
+                isLoggedIn ? (
+                  <MainLayout>
+                    <Dashboard />
+                  </MainLayout>
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              } 
             />
             <Route 
               path="/agenda" 
-              element={isLoggedIn ? <Agenda /> : <Navigate to="/login" replace />} 
+              element={
+                isLoggedIn ? (
+                  <MainLayout>
+                    <Agenda />
+                  </MainLayout>
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              } 
             />
             <Route 
               path="/pacientes" 
-              element={isLoggedIn ? <Pacientes /> : <Navigate to="/login" replace />} 
+              element={
+                isLoggedIn ? (
+                  <MainLayout>
+                    <Pacientes />
+                  </MainLayout>
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              } 
             />
             <Route 
               path="/prontuarios/:id" 
-              element={isLoggedIn ? <Prontuario /> : <Navigate to="/login" replace />} 
+              element={
+                isLoggedIn ? (
+                  <MainLayout>
+                    <Prontuario />
+                  </MainLayout>
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              } 
             />
             
             <Route path="*" element={<NotFound />} />

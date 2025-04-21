@@ -2,6 +2,12 @@
 import { User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 const UserProfile = () => {
   const { state } = useSidebar();
@@ -24,18 +30,29 @@ const UserProfile = () => {
             <p className="text-xs text-white/70">Médico</p>
           </div>
         )}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={handleLogout}
-          className="ml-auto text-white hover:bg-white/10"
-        >
-          <LogOut size={18} />
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleLogout}
+              className={cn(
+                "text-white hover:bg-white/10",
+                state === "expanded" ? "ml-auto" : ""
+              )}
+            >
+              <LogOut size={18} />
+            </Button>
+          </TooltipTrigger>
+          {state === "collapsed" && (
+            <TooltipContent side="right" className="bg-gray-800 text-white border-none">
+              Sair
+            </TooltipContent>
+          )}
+        </Tooltip>
       </div>
     </div>
   );
 };
 
 export default UserProfile;
-

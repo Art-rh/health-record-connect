@@ -46,7 +46,7 @@ const NavItems = () => {
                   </SidebarMenuButton>
                 </TooltipTrigger>
                 {state === "collapsed" && (
-                  <TooltipContent side="right">
+                  <TooltipContent side="right" className="bg-gray-800 text-white border-none">
                     {item.name}
                   </TooltipContent>
                 )}
