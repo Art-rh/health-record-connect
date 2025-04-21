@@ -21,7 +21,7 @@ const Sidebar = () => {
           <div className="flex items-center gap-2 text-xl font-bold">
             {state === "expanded" ? "ClinicCRM" : "CRM"}
           </div>
-          <SidebarTrigger className="text-white hover:bg-clinic-accent/20" />
+          <SidebarTrigger className="text-white hover:bg-white/10" />
         </SidebarHeader>
         
         <SidebarContent>
