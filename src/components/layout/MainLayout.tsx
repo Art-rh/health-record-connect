@@ -20,13 +20,20 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     return null;
   }
 
+  // Add the handler for menu click
+  const handleMenuClick = () => {
+    // This function will be passed to TopBar
+    // It can be used to toggle sidebar on mobile or perform other actions
+    console.log("Menu clicked");
+  };
+
   return (
     <SidebarProvider defaultOpen={true}>
       <div className="min-h-screen flex w-full bg-gray-50">
         <Sidebar />
         
         <div className="flex-1 flex flex-col">
-          <TopBar />
+          <TopBar onMenuClick={handleMenuClick} />
           
           <main className="flex-1 p-4 md:p-6 overflow-x-hidden">
             <div className="max-w-full mx-auto">
