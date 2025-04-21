@@ -28,7 +28,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   };
 
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider defaultOpen={false}>
       <div className="min-h-screen flex w-full bg-gray-50">
         <Sidebar />
         

@@ -21,6 +21,12 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -61,8 +67,8 @@ const Sidebar = () => {
   };
 
   return (
-    <>
-      <ShadcnSidebar className="bg-clinic-primary text-white">
+    <TooltipProvider delayDuration={0}>
+      <ShadcnSidebar className="bg-clinic-primary text-white border-r border-white/10">
         <SidebarHeader className="flex items-center justify-between px-4 py-3 h-16">
           <div className="flex items-center gap-2 text-xl font-bold">
             {state === "expanded" ? "ClinicCRM" : "CRM"}
@@ -78,22 +84,30 @@ const Sidebar = () => {
                 const isActive = location.pathname.startsWith(item.href);
                 return (
                   <SidebarMenuItem key={item.name}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isActive}
-                      tooltip={state === "collapsed" ? item.name : undefined}
-                      className={cn(
-                        "w-full",
-                        isActive
-                          ? "bg-white/20 text-white hover:bg-white/20"
-                          : "text-white/80 hover:bg-white/10 hover:text-white"
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={isActive}
+                          className={cn(
+                            "w-full",
+                            isActive
+                              ? "bg-white/20 text-white hover:bg-white/20"
+                              : "text-white/80 hover:bg-white/10 hover:text-white"
+                          )}
+                        >
+                          <Link to={item.href} className="flex items-center gap-2">
+                            <item.icon className="h-5 w-5" />
+                            {state === "expanded" && <span>{item.name}</span>}
+                          </Link>
+                        </SidebarMenuButton>
+                      </TooltipTrigger>
+                      {state === "collapsed" && (
+                        <TooltipContent side="right">
+                          {item.name}
+                        </TooltipContent>
                       )}
-                    >
-                      <Link to={item.href} className="flex items-center gap-2">
-                        <item.icon className="h-5 w-5" />
-                        <span>{item.name}</span>
-                      </Link>
-                    </SidebarMenuButton>
+                    </Tooltip>
                   </SidebarMenuItem>
                 );
               })}
@@ -112,21 +126,19 @@ const Sidebar = () => {
                   <p className="text-xs text-white/70">Médico</p>
                 </div>
               )}
-              {state === "expanded" && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleLogout}
-                  className="ml-auto text-white hover:bg-white/10"
-                >
-                  <LogOut size={18} />
-                </Button>
-              )}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleLogout}
+                className="ml-auto text-white hover:bg-white/10"
+              >
+                <LogOut size={18} />
+              </Button>
             </div>
           </div>
         </SidebarFooter>
       </ShadcnSidebar>
-    </>
+    </TooltipProvider>
   );
 };
 
