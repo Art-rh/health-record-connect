@@ -1,8 +1,10 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Bell,
+  Menu,
   Search,
   User,
 } from "lucide-react";
@@ -16,11 +18,24 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 
-const TopBar = () => {
+interface TopBarProps {
+  onMenuClick: () => void;
+}
+
+const TopBar = ({ onMenuClick }: TopBarProps) => {
   const [notifications, setNotifications] = useState(3);
   
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-white px-4 md:px-6 shadow-sm">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="md:hidden"
+        onClick={onMenuClick}
+      >
+        <Menu className="h-5 w-5" />
+      </Button>
+      
       <div className="w-full flex justify-between items-center">
         <div className="relative w-full max-w-md mr-4">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
